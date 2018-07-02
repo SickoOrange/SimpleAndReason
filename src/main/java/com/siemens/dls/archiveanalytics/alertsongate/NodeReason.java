@@ -13,14 +13,22 @@ public class NodeReason {
 
   private Port root;
   private Port currentNode;
+
+  //ancestor node for current node
   private Port ancestor;
+  //all children nodes for current node
   private Set<Port> children;
 
+  //source state, at the time, when a alert is generated
   private int value;
+  //code of problem
   private int code;
+  //expect input value at target module
   private int relevantValue;
+
   private int relevant;
 
+  //intermediately modules between source and alert module
   private int depth;
 
   private NodeReason(Builder builder) {
