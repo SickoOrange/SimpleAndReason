@@ -998,7 +998,9 @@ public abstract class AlertsOnGateHandler extends DlsLambdaHandler {
 
                 if (!Objects.equals(currentNode, root)) {
                     hierarchyNetwork.put(depth.get(), new NodeReason.Builder(root, currentNode)
-                            .setAncestor(currentNode)
+                            .setAncestor(currentNode.getConnectedOutPort().orElseThrow(() -> new IllegalArgumentException(String.format(
+                                    "current node %d has no connected output port", currentNode.getModule().getId()
+                            ))))
                             .setChildren(extendableChildren)
                             .setDepth(depth.get())
                             .build());
