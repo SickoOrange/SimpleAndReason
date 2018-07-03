@@ -42,18 +42,8 @@ import com.siemens.dls.archiveanalytics.model.Port;
 import com.siemens.dls.archiveanalytics.model.Trend;
 import com.siemens.dls.archiveanalytics.model.Tuple;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -954,6 +944,7 @@ public abstract class AlertsOnGateHandler extends DlsLambdaHandler {
     protected LinkedHashMultimap<Integer, NodeReason> splitNetwork(Port root) {
 
         LinkedHashMultimap<Integer, NodeReason> hierarchyNetwork = LinkedHashMultimap.create();
+        LinkedList<Object> hierachyNodes = Lists.newLinkedList();
 
         AtomicInteger depth = new AtomicInteger(-1);
 
@@ -1004,6 +995,7 @@ public abstract class AlertsOnGateHandler extends DlsLambdaHandler {
                             .setChildren(extendableChildren)
                             .setDepth(depth.get())
                             .build());
+                    hierachyNodes.add
                 }
 
             }
@@ -1017,8 +1009,16 @@ public abstract class AlertsOnGateHandler extends DlsLambdaHandler {
         return hierarchyNetwork;
     }
 
-    private boolean isNodeExtendable(Port node) {
+    protected boolean isNodeExtendable(Port node) {
         return !node.isArchive() && isFunctionalInter(
                 node.getModule());
     }
+
+    protected void calculateOutputValue(LinkedHashMultimap<Integer,Port> hierarchyNetwork){
+       // LinkedList<Port> nodeCollections = hierarchyNetwork.values();
+       // Collections.reverse(nodeCollections);
+
+    }
+
+
 }
