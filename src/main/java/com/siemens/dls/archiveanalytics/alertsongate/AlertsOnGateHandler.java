@@ -951,7 +951,7 @@ public abstract class AlertsOnGateHandler extends DlsLambdaHandler {
     //***********************************Refactor********************//
 
 
-    public LinkedHashMultimap<Integer, NodeReason> splitNetwork(Port root) {
+    protected LinkedHashMultimap<Integer, NodeReason> splitNetwork(Port root) {
 
         LinkedHashMultimap<Integer, NodeReason> hierarchyNetwork = LinkedHashMultimap.create();
 
@@ -977,6 +977,8 @@ public abstract class AlertsOnGateHandler extends DlsLambdaHandler {
             } else {
                 Set<Port> extendableChildren = Sets.newHashSet();
 
+                //1. module is't alert module
+                //2. module is inter module and not archived
                 if (Objects.equals(currentNode, root) || isNodeExtendable(currentNode)) {
                     extendableChildren = getInputPorts(currentNode)
                             .map(Port::getConnectedOutPort)
@@ -1005,8 +1007,8 @@ public abstract class AlertsOnGateHandler extends DlsLambdaHandler {
             }
 
             if (depth.get() >= MAX_DEPTH) {
-                LOG.info(String.format("reached the maximal depth, current depth is %d", depth.get()));
-                break;
+                LOG.info(String.format("reached the maximal depth:%s, but the programm should" +
+                        "continue to search source signal", depth.get()));
             }
         }
 
